@@ -1,13 +1,14 @@
-import uos
+import crypto
 import binascii
 
 def generateID():
-    id = uos.urandom(4)
+    id = crypto.getrandbits(4)
 
     idUnique = False
     while not idUnique:
         idHex = binascii.hexlify(id)
         idStr = idHex.decode('utf8')
+        print(idStr)
         idStr = idStr + '\r\n'
 
         with open('id_list.txt') as usedIds:

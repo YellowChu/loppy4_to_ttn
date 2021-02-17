@@ -9,19 +9,20 @@ from connect_to_ttn import connect_to_ttn
 from sensors import Sensors
 from generateID import generateID
 
+# Setting timer, delete later
+from machine import Timer
+chrono = Timer.Chrono()
+
 # turn off lopy heartbeat (blinking led)
 pycom.heartbeat(False)
 
 # establish connection between the device and the TTN
 lora = connect_to_ttn()
 
-# # call back
-# lora.callback(trigger=(LoRa.RX_PACKET_EVENT | LoRa.TX_PACKET_EVENT), handler=lora_cb)
-
 # create socket to be used for LoRa communication
 s = socket.socket(socket.AF_LORA, socket.SOCK_RAW)
 # configure data rate
-s.setsockopt(socket.SOL_LORA, socket.SO_DR, 5)
+s.setsockopt(socket.SOL_LORA, socket.SO_DR, 6)
 
 # keep sending data from sensors to the ttn every minute
 while True:
@@ -37,10 +38,8 @@ while True:
     s.setblocking(True)
     #define which port with the socket bind
     s.bind(2)
-
     # get data from pysense sensors
     sensors = Sensors()
-    print("got sensor data")
     # float to bytearrays
     alt_ba = bytearray(struct.pack("f", sensors.Altitude))
     pre_ba = bytearray(struct.pack("f", sensors.Pressure))
@@ -49,7 +48,6 @@ while True:
     # create unique id
     id = generateID()
     id_ba = bytearray(id)
-    print("got unique id")
     # compile the arrays into one
     bytes_to_send = id_ba
     bytes_to_send.extend(alt_ba)
@@ -57,12 +55,8 @@ while True:
     bytes_to_send.extend(tem_ba)
     bytes_to_send.extend(acc_ba)
 
-    # check channels
-    print(lora.stats())
     # send the data
     s.send(bytes_to_send)
-    print("data sent (doesn't mean it was successfull)\n")
-
     # make the socket non-blocking
     # (because if there's no data received it will block forever...)
     s.setblocking(False)
@@ -71,4 +65,4 @@ while True:
     pycom.rgbled(0x001100)
 
     # sleep
-    time.sleep(10)
+    time.sleep(300)

@@ -13,22 +13,13 @@ def connect_to_ttn():
     # United States = LoRa.US915
     lora = LoRa(mode=LoRa.LORAWAN, region=LoRa.EU868)
 
-    # # create an OTAA authentication parameters
-    # app_eui = ubinascii.unhexlify('70B3D57ED003A888')
-    # app_key = ubinascii.unhexlify('758ACFD0ACF0635A519F5B3063015A48')
-    # # dev_eui = ubinascii.unhexlify('70B3D5499E3B06C1')
-    #
-    # # join a network using OTAA (Over the Air Activation)
-    # lora.join(activation=LoRa.OTAA, auth=(app_eui, app_key), timeout=0)
-    # # lora.join(activation=LoRa.OTAA, auth=(dev_eui, app_eui, app_key), timeout=0)
-
     # create an ABP authentication parameters
-    dev_addr = struct.unpack(">l", ubinascii.unhexlify('2601139E'))[0]
-    nwk_swkey = ubinascii.unhexlify('40AEB0C6FE63891E9359447420338682')
-    app_swkey = ubinascii.unhexlify('66B80DBA96BA63BF8C04FE007C6AB76A')
-
+    dev_addr = struct.unpack(">l", ubinascii.unhexlify('Enter dev_addr'))[0]
+    nwk_swkey = ubinascii.unhexlify('Enter nwk_swkey')
+    app_swkey = ubinascii.unhexlify('Enter app_swkey')
     # join a network using ABP (Activation By Personalization)
     lora.join(activation=LoRa.ABP, auth=(dev_addr, nwk_swkey, app_swkey))
+
     # Blinking blue led if connecting
     while not lora.has_joined():
         # pycom.rgbled(0x000011)
