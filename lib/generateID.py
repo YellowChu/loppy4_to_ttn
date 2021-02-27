@@ -8,7 +8,6 @@ def generateID():
     while not idUnique:
         idHex = binascii.hexlify(id)
         idStr = idHex.decode('utf8')
-        print(idStr)
         idStr = idStr + '\r\n'
 
         with open('id_list.txt') as usedIds:
