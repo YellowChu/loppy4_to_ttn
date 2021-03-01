@@ -51,11 +51,11 @@ def process_downlink(downlink):
         if drInt == 3:
             _G['SLEEP'] = 900
         if drInt == 2:
-            _G['SLEEP'] = 1200
+            _G['SLEEP'] = 1800
         if drInt == 1:
-            _G['SLEEP'] = 2400
+            _G['SLEEP'] = 3600
         if drInt == 0:
-            _G['SLEEP'] = 4800
+            _G['SLEEP'] = 5400
 
 
 # turn off lopy heartbeat (blinking led)
