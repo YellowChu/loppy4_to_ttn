@@ -12,8 +12,8 @@ def connect():
     if not lora.has_joined():
         print("Fristly join")
         # create an OTAA authentication parameters, change them to the provided credentials
-        app_eui = ubinascii.unhexlify('70B3D57ED003A888')
-        app_key = ubinascii.unhexlify('4544CCA57A3A1A706EC9F906CE9D5C3B')
+        app_eui = ubinascii.unhexlify('0000000000000000')
+        app_key = ubinascii.unhexlify('D20FAEC47B8610BFA234A62402240EE4')
         # join a network using OTAA (Over The Air Activation)
         lora.join(activation=LoRa.OTAA, auth=(app_eui, app_key), timeout=0)
 
@@ -46,11 +46,20 @@ def process_downlink(downlink):
     downlinkHex = ubinascii.hexlify(downlink)
     downlinkStr = downlinkHex.decode("utf-8")
 
-    rgbStr = "0x" + downlinkStr[2:]
-    if not rgbStr == "0x000000":
-        pycom.nvs_set("rgb", int(rgbStr, 16))
-        print(int(rgbStr, 16))
-        pycom.rgbled(int(rgbStr, 16))
+    rgbStr = downlinkStr[2:]
+    if not rgbStr == "05":
+        if rgbStr == "00":
+            pycom.nvs_set("rgb", 0x880000)
+        if rgbStr == "01":
+            pycom.nvs_set("rgb", 0x008800)
+        if rgbStr == "02":
+            pycom.nvs_set("rgb", 0x000088)
+        if rgbStr == "03":
+            pycom.nvs_set("rgb", 0x880088)
+        if rgbStr == "04":
+            pycom.nvs_set("rgb", 0x888800)
+
+        pycom.rgbled(pycom.nvs_get("rgb"))
 
     drStr = downlinkStr[0:2]
     drInt = int(drStr, 10)

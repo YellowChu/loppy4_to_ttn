@@ -12,6 +12,8 @@ from sensors import Sensors
 from generateID import generateID
 from network import LoRa
 
+from pysense import Pysense
+
 # callback function (triggers during RX/TX events)
 def lora_callback(lora):
     print('A LoRa event occured: ', end='')
@@ -37,13 +39,12 @@ s = socket.socket(socket.AF_LORA, socket.SOCK_RAW)
 
 # keep sending data from sensors to the ttn every minute
 while True:
-    # purple led when fetching the data
-    pycom.rgbled(0x110011)
-
     #getting config values
     rgb = pycom.nvs_get("rgb")
     dr = pycom.nvs_get("dr")
     sleep_time = pycom.nvs_get("sleep_time")
+
+    pycom.rgbled(rgb)
 
     # configure data rate
     s.setsockopt(socket.SOL_LORA, socket.SO_DR, dr)
@@ -70,6 +71,7 @@ while True:
 
     # send the data
     s.send(uplink)
+    lora.nvram_save()
     # make the socket non-blocking
     # (because if there's no data received it will block forever...)
     s.setblocking(False)
@@ -77,4 +79,6 @@ while True:
     pycom.rgbled(rgb)
     time.sleep(2)
     # sleep
-    machine.sleep(sleep_time)
+    sensors.Pysense.setup_sleep(sleep_time/1000)
+    sensors.Pysense.go_to_sleep()
+    # machine.deepsleep(sleep_time)

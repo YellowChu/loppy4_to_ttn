@@ -18,6 +18,7 @@ class Sensors:
         si = SI7006A20(py)
         li = LIS2HH12(py)
 
+        self.Pysense = py
         self.Altitude = altitude
         self.Pressure = mp_pre.pressure()
         self.Temperature = si.temperature()
