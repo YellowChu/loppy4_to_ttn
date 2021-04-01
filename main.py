@@ -81,4 +81,3 @@ while True:
     # sleep
     sensors.Pysense.setup_sleep(sleep_time/1000)
     sensors.Pysense.go_to_sleep()
-    # machine.deepsleep(sleep_time)
