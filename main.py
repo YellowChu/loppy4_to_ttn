@@ -48,7 +48,6 @@ s.setblocking(True)
 # get data from pysense sensors
 sensors = Sensors()
 # float to bytearrays
-alt_ba = bytearray(struct.pack("f", sensors.Altitude))
 pre_ba = bytearray(struct.pack("f", sensors.Pressure))
 tem_ba = bytearray(struct.pack("f", sensors.Temperature))
 acc_ba = bytearray(struct.pack("f", sensors.Battery))
@@ -57,7 +56,6 @@ id = generateID()
 id_ba = bytearray(id)
 # compile the arrays into one
 uplink = id_ba
-uplink.extend(alt_ba)
 uplink.extend(pre_ba)
 uplink.extend(tem_ba)
 uplink.extend(acc_ba)
