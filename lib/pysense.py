@@ -1,4 +1,4 @@
-# pycom pysense script
+# Pycom PySense script
 
 from pycoproc import Pycoproc
 
